@@ -1,6 +1,6 @@
 # CFmanager
 cloud flare domain manager
-## 此脚本依赖 curl jq,请安装后再使用
+## 此脚本依赖 curl和jq,请安装后再使用
 ## 通过调用cf api来快捷管理你托管在cloud flare的域  
 ------------------------------------------
 ##  添加记录 :  A   ,AAAA , CANME , NS  , TXT   
