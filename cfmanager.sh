@@ -99,7 +99,7 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                         
                             if [ "$parsing_type" = "1" ]; then
                                 # 获取本机IPv4地址
-                                ip_address=$(ip -4 addr show | grep inet | grep -v '127.0.0.1' | awk '{print $2}' | cut -d "/" -f1 | head -n 1)
+                                ip_address=$(ip -4 addr show | grep inet | awk '{print $2}' | cut -d "/" -f1 | grep -vE '^127\.|^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\.' | head -n 1)
                             elif [ "$parsing_type" = "2" ]; then
                                 # 获取本机IPv6地址
                                 ip_address=$(ip -6 addr show | grep inet6 | grep -v fe80 | awk '{if($2!="::1/128") print $2}' | cut -d"/" -f1 | head -n 1)
