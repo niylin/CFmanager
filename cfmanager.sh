@@ -133,11 +133,12 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                             record_id=$(echo "${response_json_str}" | jq -r ".result[$i].id")
                             record_name=$(echo "${response_json_str}" | jq -r ".result[$i].name")
                             record_type=$(echo "${response_json_str}" | jq -r ".result[$i].type")
-                            echo "[$(($i+1))] $record_name ($record_type)"
+                            record_content=$(echo "${response_json_str}" | jq -r ".result[$i].content")
+                        echo "[$(($i+1))] $record_name ($record_type) -> $record_content"
                         done
                         echo "-----------------------"
                         
-                            # 提示用户输入要删除的记录编号
+                            # 提示输入要删除的记录编号
                             read -p "请输入要删除的记录编号（输入q返回）： " record_number
                         
                             if [ "$record_number" = "q" ]; then
