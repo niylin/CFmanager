@@ -16,6 +16,7 @@ cloud flare domain manager
   wget https://raw.githubusercontent.com/niylin/CFmanager/main/cfmanager.sh && chmod +x cfmanager.sh && ./cfmanager.sh
   </code></pre>
 </div>
+
 ----------------------------------------------------------------------  
 
 ----------------------------------------------------------------------  
