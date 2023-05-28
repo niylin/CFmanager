@@ -2,8 +2,8 @@ export CF_Key="xxx" # 修改为CF密钥
 export CF_Email="xxx" #修改为CF邮箱
 export domain=xxx #修改为使用域名的主域名,例如:baidu.com,此参数用来获取zone_id
 export yxdomain=xxx #修改为需要使用的域名,例如cfst.baidu.com,此参数就是指向优选的域名
-export botkey=xxx #修改为telegram的bot密钥
-export chatid=xxx #修改为接收消息的tg帐号或频道id,墙内可能发送失败,也可能成功
+export botkey="xxx" #修改为telegram的bot密钥
+export chatid="xxx" #修改为接收消息的tg帐号或频道id,墙内可能发送失败,也可能成功
 # 获取 Zone ID
 curl_head=(
     "X-Auth-Email: ${CF_Email}"
