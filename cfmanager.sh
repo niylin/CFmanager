@@ -59,17 +59,21 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                     while true; do
                         echo "(1: A, 2: AAAA, 3: CNAME, 4: NS, 5: TXT, q: 返回)："
                         read -p "请正确输入记录类型编号: " parsing_type
-                        echo "你的选择为:$record_type"
                         if [ "$parsing_type" = "1" ]; then
                             record_type="A"
+                            echo "你的选择为:$record_type"
                         elif [ "$parsing_type" = "2" ]; then
                             record_type="AAAA"
+                            echo "你的选择为:$record_type"
                         elif [ "$parsing_type" = "3" ]; then
                             record_type="CNAME"
+                            echo "你的选择为:$record_type"
                         elif [ "$parsing_type" = "4" ]; then
                             record_type="NS"
+                            echo "你的选择为:$record_type"
                         elif [ "$parsing_type" = "5" ]; then
                             record_type="TXT"
+                            echo "你的选择为:$record_type"
                         elif [ "$parsing_type" = "q" ]; then
                             break  # 退出循环
                         else
@@ -85,6 +89,8 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                             read -p "是否开启 CDN（1: 开启, 其他为不开启）： " cdn_choice
                             if [ "$cdn_choice" == "1" ]; then
                                 cdn=,\"proxied\":true
+                            elif [ "$cdn_choice" == "q" ]; then
+                                break  # 退出循环
                             else
                                 cdn=,\"proxied\":false
                             fi
@@ -104,6 +110,8 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                                 # 获取本机IPv6地址
                                 ip_address=$(ip -6 addr show | grep inet6 | grep -v fe80 | awk '{if($2!="::1/128") print $2}' | cut -d"/" -f1 | head -n 1)
                             fi
+                        elif [ "$ip_address" = "q" ]; then
+                            break  # 退出循环
                         fi
                         echo "你的IP地址:$ip_address"
                         if curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records" \
