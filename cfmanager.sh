@@ -4,20 +4,25 @@ read -p "请输入您的 Cloudflare 邮件地址: " email
 export CF_Key="$api_key"
 export CF_Email="$email"
 
-while true; do
-# 列出所有域名，并将其显示为带有编号的菜单
-echo "可供选择的域名列表,q退出："
-i=1
+# 获取域名列表并存储到数组中
+domain_list=()
 while read -r domain; do
-  echo "$i. $domain"
-  ((i++))
+  domain_list+=("$domain")
 done < <(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
          -H "X-Auth-Email: $CF_Email" \
          -H "X-Auth-Key: $CF_Key" \
          -H "Content-Type:application/json" | \
          jq -r '.result[] | .name')
 
-# 读取用户的选项并获取对应的域名
+while true; do
+  # 列出所有域名，并将其显示为带有编号的菜单
+  echo "可供选择的域名列表, q退出："
+  i=1
+  for domain in "${domain_list[@]}"; do
+    echo "$i. $domain"
+    ((i++))
+  done
+# 读取选项并获取对应的域名
 read -p "请输入选项编号： " domain_choice
     if [ "$domain_choice" = "q" ]; then
         echo "退出脚本"
