@@ -4,6 +4,11 @@ read -p "请输入您的 Cloudflare 邮件地址: " email
 export CF_Key="$api_key"
 export CF_Email="$email"
 
+# 定义颜色代码
+green_color="\e[1;32m"  # 绿色
+blue_color="\e[1;34m"   # 蓝色
+orange_color="\e[1;33m"  #橙色
+reset_color="\e[0m"     # 重置颜色为默认值
 # 获取域名列表并存储到数组中
 domain_list=()
 while read -r domain; do
@@ -19,7 +24,7 @@ while true; do
   echo "可供选择的域名列表, q退出："
   i=1
   for domain in "${domain_list[@]}"; do
-    echo "$i. $domain"
+    echo -e "${green_color}$i${reset_color}. ${blue_color}$domain${reset_color}" 
     ((i++))
   done
 # 读取选项并获取对应的域名
@@ -44,14 +49,14 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
             
             zone_id=$(curl -sS --request GET "https://api.cloudflare.com/client/v4/zones?name=$domain_name" --header "${curl_head[0]}" --header "${curl_head[1]}" --header "${curl_head[2]}" | jq -r '.result[0].id')
             
-    # 用户选项和操作的逻辑
+    # 执行具体域
     case $domain_name in
         *)
             while true; do
                 clear
                 echo "您选择的域名为：$domain_name"
                 echo "如果区域ID为空,则无法成功执行操作"
-                echo "$domain_name 的区域 ID 为：$zone_id"
+                echo -e "域名: ${green_color}$domain_name${reset_color} 的区域 ID 为：${green_color}$zone_id${reset_color}"
                 echo "-----------------"
                 echo "1. 添加解析记录"
                 echo "2. 删除解析记录"
@@ -118,7 +123,7 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                         elif [ "$ip_address" = "q" ]; then
                             break  # 退出循环
                         fi
-                        echo "你的IP地址:$ip_address"
+                        echo -e "你的IP地址: ${blue_color}${ip_address}${reset_color}"
                         if curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records" \
                             -H "X-Auth-Email: $CF_Email" \
                             -H "X-Auth-Key: $CF_Key" \
@@ -147,7 +152,7 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                             record_name=$(echo "${response_json_str}" | jq -r ".result[$i].name")
                             record_type=$(echo "${response_json_str}" | jq -r ".result[$i].type")
                             record_content=$(echo "${response_json_str}" | jq -r ".result[$i].content")
-                        echo "[$(($i+1))] $record_name ($record_type) -> $record_content"
+                        echo -e "[$((i+1))] ${green_color}${record_name}${reset_color} (${orange_color}${record_type}${reset_color}) -> ${blue_color}${record_content}${reset_color}"
                         done
                         echo "-----------------------"
                         
