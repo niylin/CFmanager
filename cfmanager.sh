@@ -157,13 +157,21 @@ domain_name=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones" \
                         echo "-----------------------"
                         
                             # 提示输入要删除的记录编号
-                            read -p "请输入要删除的记录编号（输入q返回）： " record_number
+                            echo -e "输入q返回,输入${green_color}Delete all parsing records${reset_color}删除所有记录"
+                            read -p "请输入要删除的记录编号： " record_number
                         
                             if [ "$record_number" = "q" ]; then
                                 echo "退出删除记录循环。"
                                 break  # 退出循环
                             fi
-                        
+                            if [ "$record_number" = "Delete all parsing records" ]; then
+                                 # 删除所有记录
+                                for i in $(seq 0 $(($record_count-1))); do
+                                    record_id=$(echo "${response_json_str}" | jq -r ".result[$i].id")
+                                    curl -sS --request DELETE "${curl_url}/${record_id}" --header "${curl_head[0]}" --header "${curl_head[1]}" --header "${curl_head[2]}"
+                                done
+                                echo "所有记录已成功删除。"
+                            fi
                             # 获取域名的解析记录列表
                             response_json_str=$(curl -sS --request GET "${curl_url}" --header "${curl_head[0]}" --header "${curl_head[1]}" --header "${curl_head[2]}")
                             record_count=$(echo "${response_json_str}" | jq -r '.result | length')
