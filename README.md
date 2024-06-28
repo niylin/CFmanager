@@ -1,11 +1,12 @@
 ## CFmanager
 cloud flare domain manager
-#### 此脚本依赖 curl和jq,请安装后再使用
+
 #### 通过调用cf api来快捷管理你托管在cloud flare的域  
 ------------------------------------------
 ####  添加记录 :  A   ,AAAA , CANME , NS  , TXT   
 ####  可删除所有记录 
 -------------------------------------------
+#### 密钥配置位于 ~/.config/cfmanager/config.json    
 
 
 
@@ -13,7 +14,11 @@ cloud flare domain manager
 <div>
   <button class="btn" data-clipboard-target="#code"></button>
   <pre><code id="code" class="language-python">
-  wget https://raw.githubusercontent.com/niylin/CFmanager/main/cfmanager.sh && chmod +x cfmanager.sh && ./cfmanager.sh
+  {
+    "CF_Key": "密钥",
+    "CF_Email": "账户"
+  }
+
   </code></pre>
 </div>
 
