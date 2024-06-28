@@ -7,7 +7,7 @@ init(autoreset=True)
 
 # 获取用户的主目录
 home_dir = os.path.expanduser('~')
-config_path = os.path.join(home_dir, '.config', 'cfdomain', 'config.json')
+config_path = os.path.join(home_dir, '.config', 'cfmanager', 'config.json')
 
 # 检查配置文件是否存在
 if not os.path.exists(config_path):
